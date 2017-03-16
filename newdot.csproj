@@ -47,4 +47,7 @@
       <Version>3.3.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
+  </ItemGroup>
 </Project>

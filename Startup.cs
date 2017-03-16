@@ -64,7 +64,7 @@ namespace newdot
 
             app.UseWebSockets();
 
-            app.MapWebSocketManager("/ws", serviceProvider.GetService<ChatMessageHandler>());
+            app.MapWebSocketManager("/chat", serviceProvider.GetService<ChatApplication.ChatHandler>());
 
             app.UseMvc();
             app.UseStaticFiles();
