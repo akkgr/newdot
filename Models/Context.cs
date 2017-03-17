@@ -24,10 +24,11 @@ namespace newdot.Models
 
         public IMongoCollection<User> Users { get; set; }
 
-        private void EnsureIndexes()
+        public void EnsureIndexes()
         {
             var options = new CreateIndexOptions();
             options.Unique = true;           
+            Users.Indexes.CreateOneAsync(Builders<User>.IndexKeys.Ascending(d => d.Username), options);
         }
 
         public static void Init()
@@ -41,48 +42,6 @@ namespace newdot.Models
             });
 
             BsonClassMap.RegisterClassMap<User>(cm =>
-            {
-                cm.AutoMap();
-            });
-
-            BsonClassMap.RegisterClassMap<AccommodationPeriod>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapMember(c => c.StartDate).SetSerializer(new DateTimeSerializer(DateTimeKind.Local));
-                cm.MapMember(c => c.EndDate).SetSerializer(new DateTimeSerializer(DateTimeKind.Local));
-            });
-
-            BsonClassMap.RegisterClassMap<AccommodationType>(cm =>
-            {
-                cm.AutoMap();
-            });
-
-            BsonClassMap.RegisterClassMap<Person>(cm =>
-            {
-                cm.AutoMap();
-                cm.UnmapMember(c => c.Spouse);
-            });
-
-            BsonClassMap.RegisterClassMap<ResortApplication>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapMember(c => c.DateSubmitted).SetSerializer(new DateTimeSerializer(DateTimeKind.Local));
-                cm.UnmapMember(c => c.Person);
-                cm.UnmapMember(c => c.AccommodationCenter);
-                cm.UnmapMember(c => c.AccommodationType);
-                cm.UnmapMember(c => c.FirstAccommodationPeriod);
-                cm.UnmapMember(c => c.SecondAccommodationPeriod);
-                cm.UnmapMember(c => c.AccommodationTypes);
-                cm.UnmapMember(c => c.AccommodationCenters);
-                cm.UnmapMember(c => c.AccommodationPeriods);
-            });
-
-            BsonClassMap.RegisterClassMap<SpayFak>(cm =>
-            {
-                cm.AutoMap();
-            });
-
-            BsonClassMap.RegisterClassMap<CpayFak>(cm =>
             {
                 cm.AutoMap();
             });
