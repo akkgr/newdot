@@ -45,7 +45,7 @@ namespace WebSocketManager
 
                     catch (WebSocketException e)
                     {
-                        throw; //let's not swallow any exception for now
+                        throw e; //let's not swallow any exception for now
                     }
 
                     return;
