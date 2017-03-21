@@ -47,7 +47,8 @@ namespace newdot
             services.AddSingleton<Context>(p => new Context(dbConectionString));
 
             services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2(Path.Combine(".", "certs", "IdentityServer4Auth.pfx"), "", X509KeyStorageFlags.MachineKeySet))
+                .AddTemporarySigningCredential()
+                //.AddSigningCredential(new X509Certificate2(Path.Combine(".", "certs", "IdentityServer4Auth.pfx"), "", X509KeyStorageFlags.MachineKeySet))
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>()
