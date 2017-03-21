@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using ChatApplication;
 using Cinnamon.Auth;
+using Cinnamon.Identity;
 using Hangfire;
 using Hangfire.Mongo;
 using Microsoft.AspNetCore.Builder;

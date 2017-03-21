@@ -25,6 +25,12 @@ namespace WebSocketManager
             if (!context.WebSockets.IsWebSocketRequest)
                 return;
 
+            if (!context.User.Identity.IsAuthenticated)
+            {
+                context.Response.StatusCode = 401;
+                return;
+            }
+
             var socket = await context.WebSockets.AcceptWebSocketAsync();
             await _webSocketHandler.OnConnected(socket);
 
