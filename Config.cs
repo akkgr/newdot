@@ -31,7 +31,11 @@ namespace Cinnamon.Auth
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api1" },
+                    AllowedCorsOrigins = new List<string>
+                    {                        
+                        "http://localhost:4200"
+                    }
                 }
             };
         }

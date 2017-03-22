@@ -37,9 +37,10 @@ namespace newdot
                 .CreateLogger();
 
             dbConectionString = Configuration.GetConnectionString("DefaultConnection");
-            Models.Context.Init();
+            Context.Init();
             var ctx = new Context(dbConectionString);
             ctx.EnsureIndexes();
+            ctx.EnsureAdminAccount();
         }
 
         public void ConfigureServices(IServiceCollection services)

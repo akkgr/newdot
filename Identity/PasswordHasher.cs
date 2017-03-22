@@ -9,7 +9,18 @@ namespace Cinnamon.Identity
     public class PasswordHasher
     {
         private static int _iterCount = 10000;
-        private byte[] HashPassword(string password, RandomNumberGenerator rng)
+
+        public static string HashPassword(string password)
+        {
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
+            var rng = RandomNumberGenerator.Create();
+            return Convert.ToBase64String(HashPassword(password, rng));
+        }
+
+        private static byte[] HashPassword(string password, RandomNumberGenerator rng)
         {
             return HashPassword(password, rng,
                 prf: KeyDerivationPrf.HMACSHA256,

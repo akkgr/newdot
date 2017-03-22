@@ -29,7 +29,7 @@ namespace Cinnamon.Identity
                 if (user != null)
                 {
                     var claims = new HashSet<Claim>(new ClaimComparer());
-                    claims.Add(new Claim(ClaimTypes.Role,"user"));
+                    claims.Add(new Claim(ClaimTypes.Role, "user"));
                     context.IssuedClaims.AddRange(claims);
                 }
             });
@@ -37,16 +37,15 @@ namespace Cinnamon.Identity
 
         public Task IsActiveAsync(IsActiveContext context)
         {
-            return Task.Factory.StartNew(async () =>
+            context.IsActive = false;
+            var filter = new BsonDocument();
+            var user = db.Users.Find(t => t.Username == context.Subject.GetSubjectId()).FirstOrDefault();
+            if (user != null)
             {
-                context.IsActive = false;
-                var filter = new BsonDocument();
-                var user = await db.Users.Find(t => t.Username == context.Subject.GetSubjectId()).FirstOrDefaultAsync();
-                if (user != null)
-                {
-                    context.IsActive = user.IsActive;
-                }
-            });
+                context.IsActive = user.IsActive;
+            }
+
+            return Task.FromResult(0);
         }
     }
 }

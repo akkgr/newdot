@@ -4,6 +4,7 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using System;
+using Cinnamon.Identity;
 
 namespace newdot.Models
 {
@@ -19,7 +20,7 @@ namespace newdot.Models
 			}
 			var database = client.GetDatabase(url.DatabaseName);
 
-            Users = database.GetCollection<User>("AccommodationCenters");
+            Users = database.GetCollection<User>("users");
         }
 
         public IMongoCollection<User> Users { get; set; }
@@ -29,6 +30,19 @@ namespace newdot.Models
             var options = new CreateIndexOptions();
             options.Unique = true;           
             Users.Indexes.CreateOneAsync(Builders<User>.IndexKeys.Ascending(d => d.Username), options);
+        }
+
+        public void EnsureAdminAccount()
+        {
+            var admin = Users.Find(t=>t.Username == "admin").FirstOrDefault();
+            if (admin == null)
+            {
+                admin = new User();
+                admin.Username = "admin";
+                admin.PasswordHash = PasswordHasher.HashPassword("admin");
+                admin.IsActive = true;
+                Users.InsertOne(admin);
+            }
         }
 
         public static void Init()

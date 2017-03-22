@@ -20,18 +20,17 @@ namespace Cinnamon.Identity
 
         public Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            return Task.Factory.StartNew(async () =>
+            var filter = new BsonDocument();
+            var user = db.Users.Find(t => t.Username == context.UserName).FirstOrDefault();
+            if (user != null)
             {
-                var filter = new BsonDocument();
-                var user = await db.Users.Find(t => t.Username == context.UserName).FirstOrDefaultAsync();
-                if (user != null)
+                if (PasswordHasher.VerifyHashedPassword(user.PasswordHash, context.Password))
                 {
-                    if(PasswordHasher.VerifyHashedPassword(user.PasswordHash, context.Password))
-                    {
-                        context.Result = new GrantValidationResult(user.Username, OidcConstants.AuthenticationMethods.Password);
-                    }
+                    context.Result = new GrantValidationResult(user.Username, OidcConstants.AuthenticationMethods.Password);
                 }
-            });
+            }
+
+            return Task.FromResult(0);
         }
     }
 }
